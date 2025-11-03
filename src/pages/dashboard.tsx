@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { Header } from "../components/header"
 import { Footer } from "../components/footer";
+import { useBankAccounts } from "../services/use-bank-accounts";
 
 export function Dashboard() {
+  const [userId, setUserId] = useState<string | null>(null);
+  const { data: bankAccounts, isLoading, isError } = useBankAccounts(userId);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    setUserId(storedUserId);
+  }, []);
+
+  const totalBalance = bankAccounts?.reduce((sum, account) => sum + account.balance, 0) ?? 0;
+  const hasBankAccounts = bankAccounts && bankAccounts.length > 0;
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -14,7 +27,9 @@ export function Dashboard() {
               <div className="w-1 bg-green-800 self-stretch" />
               <div className="flex flex-col flex-1 ml-4">
                 <h4 className="dark:text-white">Saldo geral</h4>
-                <p className="dark:text-white text-2xl font-bold mt-1">R$ 10.000,00</p>
+                <p className="dark:text-white text-2xl font-bold mt-1">
+                  {isLoading ? 'Carregando...' : `R$ ${totalBalance.toFixed(2).replace('.', ',')}`}
+                </p>
               </div>
               <div className="flex items-center justify-center">
                 <FaRegEyeSlash className="h-6 w-6 dark:text-white cursor-pointer" />
@@ -22,16 +37,43 @@ export function Dashboard() {
             </div>
             <div className="p-6">
               <h2 className="font-bold dark:text-white mb-4">Minhas contas</h2>
-              <div className="flex items-center justify-between">
-                <div className="rounded-full w-12 h-12 bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
-                  {/* imagem */}
-                </div>
-                <h3 className="dark:text-white ml-4 flex-1">Nubank</h3>
-                <div className="ml-auto">
-                  <p className="dark:text-white font-semibold">R$ 5.000,00</p>
-                </div>
-              </div>
-              <button className="w-full bg-green-400 mt-8 px-4 py-2 rounded">Gerenciar contas</button>
+
+              {isLoading && (
+                <p className="dark:text-white text-center">Carregando contas...</p>
+              )}
+
+              {isError && (
+                <p className="dark:text-red-400 text-center">Erro ao carregar contas</p>
+              )}
+
+              {!isLoading && !isError && !hasBankAccounts && (
+                <button className="w-full bg-green-400 hover:bg-green-500 px-4 py-2 rounded font-semibold transition-colors">
+                  Adicionar conta
+                </button>
+              )}
+
+              {!isLoading && !isError && hasBankAccounts && (
+                <>
+                  <div className="space-y-4">
+                    {bankAccounts.map((account) => (
+                      <div key={account.id} className="flex items-center justify-between">
+                        <div className="rounded-full w-12 h-12 bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                          {/* imagem */}
+                        </div>
+                        <h3 className="dark:text-white ml-4 flex-1">Conta {account.number}</h3>
+                        <div className="ml-auto">
+                          <p className="dark:text-white font-semibold">
+                            R$ {account.balance.toFixed(2).replace('.', ',')}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="w-full bg-green-400 hover:bg-green-500 mt-8 px-4 py-2 rounded font-semibold transition-colors">
+                    Gerenciar contas
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
