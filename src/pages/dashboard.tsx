@@ -1,5 +1,6 @@
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { Header } from "../components/header"
+import { Footer } from "../components/footer";
 
 export function Dashboard() {
   return (
@@ -73,6 +74,8 @@ export function Dashboard() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
