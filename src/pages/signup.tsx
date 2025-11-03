@@ -2,6 +2,7 @@ import { Form, FormLabel } from "../components/ui/form"
 import { Input } from "../components/ui/input"
 import { TogglePasswordButton } from "../components/ui/toggle-password-button"
 import { Button } from "../components/ui/button"
+import { Link } from "react-router-dom"
 
 import { useState } from 'react'
 import { useCreateUser } from '../services/use-create-user'
@@ -116,7 +117,7 @@ export function Signup() {
 
                 <p className="text-black text-center block w-full max-w-md mx-auto mt-1">
                     Tem uma conta?
-                    <a className="text-white font-semibold" href="index.html"> Conecte-se</a>
+                    <Link to="/" className="text-white font-semibold ml-1">Conecte-se</Link>
                 </p>
             </Form>
         </main>

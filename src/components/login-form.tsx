@@ -4,7 +4,7 @@ import { TogglePasswordButton } from './ui/toggle-password-button'
 import { Button } from './ui/button'
 import { useState } from 'react'
 import { useLogin } from '../services/use-login'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export function LoginForm() {
     const [email, setEmail] = useState('')
@@ -80,10 +80,6 @@ export function LoginForm() {
                 />
             </div>
 
-            <div className="text-sm text-white font-semibold block w-full max-w-md mx-auto mt-1">
-                <a href="password-reset.html">Esqueci minha senha</a>
-            </div>
-
             <Button type="submit" disabled={login.status === 'pending'}>
                 {login.status === 'pending' ? 'Entrando...' : 'Entrar'}
             </Button>
@@ -96,7 +92,7 @@ export function LoginForm() {
             )}
 
             <p className="text-black text-center block w-full max-w-md mx-auto mt-1">Não tem uma conta?
-                <a className="text-white font-semibold" href="sign-up.html"> Cadastre-se</a>
+                <Link to="/signup" className="text-white font-semibold ml-1">Cadastre-se</Link>
             </p>
 
             <FormSeparator />
