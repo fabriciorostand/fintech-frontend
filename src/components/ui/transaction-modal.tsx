@@ -1,15 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FormLabel } from './form'
 import { Input } from './input'
 import { Button } from './button'
 import { useTransactionTypes } from '../../services/use-transaction-types'
+import { useBankAccounts } from '../../services/use-bank-accounts'
+import { useTransactionCategories } from '../../services/use-transaction-categories'
+import { useCreateTransaction } from '../../services/use-create-transaction'
+import { useUpdateTransaction } from '../../services/use-update-transaction'
+import { useBanks } from '../../services/use-banks'
+
+interface TransactionData {
+    id: number
+    name: string
+    description: string
+    bankAccountId: number
+    transactionTypeId: number
+    transactionCategoryId: number
+    value: number
+    date: string
+}
 
 interface TransactionModalProps {
     isOpen: boolean
     onClose: () => void
+    mode?: 'create' | 'edit'
+    title?: string
+    submitButtonText?: string
+    initialData?: TransactionData
 }
 
-export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
+export function TransactionModal({
+    isOpen,
+    onClose,
+    mode = 'create',
+    title,
+    submitButtonText,
+    initialData
+}: TransactionModalProps) {
     const [nome, setNome] = useState('')
     const [descricao, setDescricao] = useState('')
     const [bankAccountId, setBankAccountId] = useState('')
@@ -17,23 +44,86 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
     const [transactionCategoryId, setTransactionCategoryId] = useState('')
     const [valor, setValor] = useState('')
     const [data, setData] = useState('')
+    const [userId, setUserId] = useState<string | null>(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const { data: transactionTypes, isLoading: isLoadingTransactionTypes } = useTransactionTypes()
+    const { data: bankAccounts, isLoading: isLoadingBankAccounts } = useBankAccounts(userId)
+    const { data: transactionCategories, isLoading: isLoadingTransactionCategories } = useTransactionCategories()
+    const { data: banks } = useBanks()
+    const createTransaction = useCreateTransaction()
+    const updateTransaction = useUpdateTransaction()
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('userId')
+        setUserId(storedUserId)
+    }, [])
+
+    useEffect(() => {
+        if (mode === 'edit' && initialData) {
+            setNome(initialData.name)
+            setDescricao(initialData.description)
+            setBankAccountId(String(initialData.bankAccountId))
+            setTransactionTypeId(String(initialData.transactionTypeId))
+            setTransactionCategoryId(String(initialData.transactionCategoryId))
+            setValor(String(initialData.value))
+            setData(initialData.date)
+        } else {
+            setNome('')
+            setDescricao('')
+            setBankAccountId('')
+            setTransactionTypeId('')
+            setTransactionCategoryId('')
+            setValor('')
+            setData('')
+        }
+    }, [mode, initialData, isOpen])
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setIsSubmitting(true)
 
-        // Limpar o formulário
-        setNome('')
-        setDescricao('')
-        setBankAccountId('')
-        setTransactionTypeId('')
-        setTransactionCategoryId('')
-        setValor('')
-        setData('')
+        try {
+            if (mode === 'create') {
+                await createTransaction.mutateAsync({
+                    name: nome,
+                    description: descricao,
+                    bankAccountId: Number(bankAccountId),
+                    transactionTypeId: Number(transactionTypeId),
+                    transactionCategoryId: Number(transactionCategoryId),
+                    value: Number(valor),
+                    date: data,
+                })
+            } else if (mode === 'edit' && initialData) {
+                await updateTransaction.mutateAsync({
+                    id: initialData.id,
+                    name: nome,
+                    description: descricao,
+                    bankAccountId: Number(bankAccountId),
+                    transactionTypeId: Number(transactionTypeId),
+                    transactionCategoryId: Number(transactionCategoryId),
+                    value: Number(valor),
+                    date: data,
+                })
+            }
 
-        // Fechar o modal
-        onClose()
+            // Limpar o formulário
+            setNome('')
+            setDescricao('')
+            setBankAccountId('')
+            setTransactionTypeId('')
+            setTransactionCategoryId('')
+            setValor('')
+            setData('')
+
+            // Fechar o modal
+            onClose()
+        } catch (error) {
+            console.error(`Erro ao ${mode === 'create' ? 'criar' : 'atualizar'} lançamento:`, error)
+            alert(`Erro ao ${mode === 'create' ? 'criar' : 'atualizar'} lançamento`)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     if (!isOpen) return null
@@ -50,7 +140,7 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                 </button>
 
                 <h2 className="text-white text-2xl font-bold mb-6 text-center">
-                    Novo Lançamento
+                    {title || (mode === 'create' ? 'Novo Lançamento' : 'Editar Lançamento')}
                 </h2>
 
                 <form onSubmit={handleSubmit}>
@@ -64,6 +154,7 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
                             required
+                            disabled={isSubmitting}
                         />
 
                         <FormLabel className="mt-4 text-white">
@@ -76,18 +167,28 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                             onChange={(e) => setDescricao(e.target.value)}
                             rows={3}
                             required
+                            disabled={isSubmitting}
                         />
 
                         <FormLabel className="mt-4 text-white">
                             Conta Bancária:
                         </FormLabel>
-                        <Input
-                            type="text"
-                            placeholder="Digite o ID da conta"
+                        <select
+                            className="bg-white border border-gray-300 p-2 rounded w-full max-w-md mx-auto block mt-1"
                             value={bankAccountId}
                             onChange={(e) => setBankAccountId(e.target.value)}
                             required
-                        />
+                            disabled={isLoadingBankAccounts || isSubmitting}
+                        >
+                            <option value="">
+                                {isLoadingBankAccounts ? 'Carregando...' : 'Selecione uma conta'}
+                            </option>
+                            {bankAccounts?.map((account) => (
+                                <option key={account.id} value={account.id}>
+                                    {banks?.find(b => b.id === account.bankId)?.name} - {account.number}
+                                </option>
+                            ))}
+                        </select>
 
                         <FormLabel className="mt-4 text-white">
                             Tipo:
@@ -97,7 +198,7 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                             value={transactionTypeId}
                             onChange={(e) => setTransactionTypeId(e.target.value)}
                             required
-                            disabled={isLoadingTransactionTypes}
+                            disabled={isLoadingTransactionTypes || isSubmitting}
                         >
                             <option value="">
                                 {isLoadingTransactionTypes ? 'Carregando...' : 'Selecione um tipo'}
@@ -112,13 +213,22 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                         <FormLabel className="mt-4 text-white">
                             Categoria:
                         </FormLabel>
-                        <Input
-                            type="text"
-                            placeholder="Digite o ID da categoria"
+                        <select
+                            className="bg-white border border-gray-300 p-2 rounded w-full max-w-md mx-auto block mt-1"
                             value={transactionCategoryId}
                             onChange={(e) => setTransactionCategoryId(e.target.value)}
                             required
-                        />
+                            disabled={isLoadingTransactionCategories || isSubmitting}
+                        >
+                            <option value="">
+                                {isLoadingTransactionCategories ? 'Carregando...' : 'Selecione uma categoria'}
+                            </option>
+                            {transactionCategories?.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
 
                         <FormLabel className="mt-4 text-white">
                             Valor:
@@ -131,6 +241,7 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                             step="0.01"
                             min="0"
                             required
+                            disabled={isSubmitting}
                         />
 
                         <FormLabel className="mt-4 text-white">
@@ -141,10 +252,11 @@ export function TransactionModal({ isOpen, onClose }: TransactionModalProps) {
                             value={data}
                             onChange={(e) => setData(e.target.value)}
                             required
+                            disabled={isSubmitting}
                         />
 
-                        <Button type="submit">
-                            Salvar Lançamento
+                        <Button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? 'Salvando...' : (submitButtonText || (mode === 'create' ? 'Salvar Lançamento' : 'Atualizar Lançamento'))}
                         </Button>
                     </div>
                 </form>
