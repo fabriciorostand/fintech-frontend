@@ -1,0 +1,27 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { CreateTransactionRequest } from "./types/create/create-transaction-request";
+import type { CreateTransactionResponse } from "./types/create/create-transaction-response";
+
+export function useCreateTransaction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateTransactionRequest) => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result: CreateTransactionResponse = await response.json();
+
+      return result;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-transactions'] });
+    },
+  });
+}

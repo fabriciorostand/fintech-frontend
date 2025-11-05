@@ -7,6 +7,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useDropdown } from "../hooks/use-dropdown";
 import { useSidebar } from "../hooks/use-sidebar";
 import { Link } from "react-router-dom";
+import { AiFillBank } from "react-icons/ai";
 
 export function Header() {
     const { isOpen, toggleSidebar } = useSidebar();
@@ -57,6 +58,10 @@ export function Header() {
                         <BsBarChartFill />
                         Investimentos
                     </Link>
+                    <Link to="/bank-accounts" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
+                        <AiFillBank />
+                        Contas Bancárias
+                    </Link>
                     <a href="account-preferences.html" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
                         <LuSettings />
                         Configurações
@@ -65,7 +70,7 @@ export function Header() {
             </div>
 
             <div className="flex items-center gap-4 ml-auto">
-                {/* Notification icon - ilustrativo */}
+                {/* Notification icon */}
                 <div>
                     <MdNotificationsNone className="h-6 w-6 cursor-pointer" />
                 </div>

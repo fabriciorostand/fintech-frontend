@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type { GetBankAccountsResponse } from "./types/get-bank-accounts-response";
+import type { GetBankAccountsResponse } from "./types/get/get-bank-accounts-response";
 
 export function useBankAccounts(userId: string | null) {
   return useQuery({
-    queryKey: ['bank-accounts', userId],
+    queryKey: ['get-bank-accounts', userId],
     queryFn: async () => {
       if (!userId) {
         throw new Error('User ID is required');

@@ -3,6 +3,7 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { Header } from "../components/header"
 import { Footer } from "../components/footer";
 import { useBankAccounts } from "../services/use-bank-accounts";
+import { Link } from "react-router-dom";
 
 export function Dashboard() {
   const [userId, setUserId] = useState<string | null>(null);
@@ -21,7 +22,7 @@ export function Dashboard() {
       <Header />
 
       <main className="bg-gray-100 dark:bg-black flex-1 p-4 pt-16 pb-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-6 mt-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-6 mt-8">
           <div className="dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-xl">
             <div className="flex items-center justify-between p-6">
               <div className="w-1 bg-green-800 self-stretch" />
@@ -47,9 +48,9 @@ export function Dashboard() {
               )}
 
               {!isLoading && !isError && !hasBankAccounts && (
-                <button className="w-full bg-green-400 hover:bg-green-500 px-4 py-2 rounded font-semibold transition-colors">
+                <Link to="/bank-accounts" className="block w-full bg-green-400 hover:bg-green-500 hover:cursor-pointer mt-8 px-4 py-2 rounded font-semibold text-center transition-colors">
                   Adicionar conta
-                </button>
+                </Link>
               )}
 
               {!isLoading && !isError && hasBankAccounts && (
@@ -69,9 +70,9 @@ export function Dashboard() {
                       </div>
                     ))}
                   </div>
-                  <button className="w-full bg-green-400 hover:bg-green-500 mt-8 px-4 py-2 rounded font-semibold transition-colors">
+                  <Link to="/bank-accounts" className="block w-full bg-green-400 hover:bg-green-500 hover:cursor-pointer mt-8 px-4 py-2 rounded font-semibold text-center transition-colors">
                     Gerenciar contas
-                  </button>
+                  </Link>
                 </>
               )}
             </div>

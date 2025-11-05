@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateUserRequest } from "./types/create-user-request";
-import type { CreateUserResponse } from "./types/create-user-response";
+import type { CreateUserRequest } from "./types/create/create-user-request";
+import type { CreateUserResponse } from "./types/create/create-user-response";
 
 export function useCreateUser() {
   const queryClient = useQueryClient();

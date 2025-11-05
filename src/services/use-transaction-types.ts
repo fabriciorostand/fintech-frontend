@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { GetTransactionTypesResponse } from "./types/get-transaction-types-response";
+import type { GetTransactionTypesResponse } from "./types/get/get-transaction-types-response";
 
 export function useTransactionTypes() {
   return useQuery({
