@@ -13,15 +13,22 @@ import { useBanks } from "../services/use-banks";
 import { useDeleteTransaction } from "../services/use-delete-transaction";
 import { useUserTransactions } from "../services/use-user-transactions";
 import { useUserTransactionsByType } from "../services/use-user-transactions-by-type";
+import { useBankAccountTypeTransactions } from "../services/use-bank-account-type-transactions";
 
 export function Transactions() {
     const userId = localStorage.getItem('userId');
     const [selectedBankAccountId, setSelectedBankAccountId] = useState<string | null>(null);
     const [selectedTransactionTypeId, setSelectedTransactionTypeId] = useState<string | null>(null);
 
-    // Busca transações de uma conta específica quando selectedBankAccountId não for 'all'
+    // Busca transações de uma conta específica quando selectedBankAccountId não for 'all' e não houver filtro de tipo
     const { data: transactionsByAccount, isLoading: isLoadingByAccount, error: errorByAccount } = useTransactions(
-        selectedBankAccountId !== 'all' ? selectedBankAccountId : null
+        selectedBankAccountId !== 'all' && !selectedTransactionTypeId ? selectedBankAccountId : null
+    );
+
+    // Busca transações de uma conta específica filtradas por tipo
+    const { data: transactionsByAccountType, isLoading: isLoadingByAccountType, error: errorByAccountType } = useBankAccountTypeTransactions(
+        selectedBankAccountId !== 'all' && selectedTransactionTypeId ? selectedBankAccountId : null,
+        selectedTransactionTypeId
     );
 
     // Busca todas as transações do usuário quando selectedBankAccountId for 'all' e não houver filtro de tipo
@@ -57,13 +64,13 @@ export function Transactions() {
     // Determina quais dados usar baseado no filtro selecionado
     const transactions = selectedBankAccountId === 'all'
         ? (selectedTransactionTypeId ? transactionsByType : transactionsByUser)
-        : transactionsByAccount;
+        : (selectedTransactionTypeId ? transactionsByAccountType : transactionsByAccount);
     const isLoading = selectedBankAccountId === 'all'
         ? (selectedTransactionTypeId ? isLoadingByType : isLoadingByUser)
-        : isLoadingByAccount;
+        : (selectedTransactionTypeId ? isLoadingByAccountType : isLoadingByAccount);
     const error = selectedBankAccountId === 'all'
         ? (selectedTransactionTypeId ? errorByType : errorByUser)
-        : errorByAccount;
+        : (selectedTransactionTypeId ? errorByAccountType : errorByAccount);
 
     // Seleciona "Todas" por padrão
     useEffect(() => {
@@ -162,26 +169,24 @@ export function Transactions() {
                                     </div>
                                 )}
 
-                                {selectedBankAccountId === 'all' && (
-                                    <div className="flex flex-col gap-1.5 flex-1 min-w-[180px] max-w-[250px]">
-                                        <label
-                                            htmlFor="type-filter"
-                                            className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1"
-                                        >
-                                            Tipo de Transação
-                                        </label>
-                                        <select
-                                            id="type-filter"
-                                            value={selectedTransactionTypeId || ''}
-                                            onChange={(e) => setSelectedTransactionTypeId(e.target.value || null)}
-                                            className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 dark:text-white focus:border-green-400 dark:focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer shadow-sm"
-                                        >
-                                            <option value="">Todos os tipos</option>
-                                            <option value="1">Receita</option>
-                                            <option value="4">Despesa</option>
-                                        </select>
-                                    </div>
-                                )}
+                                <div className="flex flex-col gap-1.5 flex-1 min-w-[180px] max-w-[250px]">
+                                    <label
+                                        htmlFor="type-filter"
+                                        className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1"
+                                    >
+                                        Tipo de Transação
+                                    </label>
+                                    <select
+                                        id="type-filter"
+                                        value={selectedTransactionTypeId || ''}
+                                        onChange={(e) => setSelectedTransactionTypeId(e.target.value || null)}
+                                        className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 dark:text-white focus:border-green-400 dark:focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer shadow-sm"
+                                    >
+                                        <option value="">Todos os tipos</option>
+                                        <option value="1">Receita</option>
+                                        <option value="4">Despesa</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <button
