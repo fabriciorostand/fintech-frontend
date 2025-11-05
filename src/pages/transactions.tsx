@@ -6,19 +6,36 @@ import { MdEdit } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useTransactions } from "../services/use-bank-account-transactions";
 import { useBankAccounts } from "../services/use-bank-accounts";
-import { useTransactionTypes } from "../services/use-transaction-types";
 import { useTransactionCategories } from "../services/use-transaction-categories";
 import { TransactionModal } from "../components/ui/transaction-modal";
 import { ExclusionConfirmation } from "../components/ui/exclusion-confirmation";
 import { useBanks } from "../services/use-banks";
 import { useDeleteTransaction } from "../services/use-delete-transaction";
+import { useUserTransactions } from "../services/use-user-transactions";
+import { useUserTransactionsByType } from "../services/use-user-transactions-by-type";
 
 export function Transactions() {
     const userId = localStorage.getItem('userId');
     const [selectedBankAccountId, setSelectedBankAccountId] = useState<string | null>(null);
-    const { data: transactions, isLoading, error } = useTransactions(selectedBankAccountId);
+    const [selectedTransactionTypeId, setSelectedTransactionTypeId] = useState<string | null>(null);
+
+    // Busca transações de uma conta específica quando selectedBankAccountId não for 'all'
+    const { data: transactionsByAccount, isLoading: isLoadingByAccount, error: errorByAccount } = useTransactions(
+        selectedBankAccountId !== 'all' ? selectedBankAccountId : null
+    );
+
+    // Busca todas as transações do usuário quando selectedBankAccountId for 'all' e não houver filtro de tipo
+    const { data: transactionsByUser, isLoading: isLoadingByUser, error: errorByUser } = useUserTransactions(
+        selectedBankAccountId === 'all' && !selectedTransactionTypeId ? userId : null
+    );
+
+    // Busca transações do usuário por tipo quando selectedBankAccountId for 'all' e houver filtro de tipo
+    const { data: transactionsByType, isLoading: isLoadingByType, error: errorByType } = useUserTransactionsByType(
+        selectedBankAccountId === 'all' && selectedTransactionTypeId ? userId : null,
+        selectedTransactionTypeId
+    );
+
     const { data: bankAccounts } = useBankAccounts(userId);
-    const { data: transactionTypes } = useTransactionTypes();
     const { data: transactionCategories } = useTransactionCategories();
     const { data: banks } = useBanks();
     const { mutate: deleteTransaction, isPending: isDeleting } = useDeleteTransaction();
@@ -37,10 +54,21 @@ export function Transactions() {
         date: string;
     } | null>(null);
 
-    // Seleciona a primeira conta bancária automaticamente
+    // Determina quais dados usar baseado no filtro selecionado
+    const transactions = selectedBankAccountId === 'all'
+        ? (selectedTransactionTypeId ? transactionsByType : transactionsByUser)
+        : transactionsByAccount;
+    const isLoading = selectedBankAccountId === 'all'
+        ? (selectedTransactionTypeId ? isLoadingByType : isLoadingByUser)
+        : isLoadingByAccount;
+    const error = selectedBankAccountId === 'all'
+        ? (selectedTransactionTypeId ? errorByType : errorByUser)
+        : errorByAccount;
+
+    // Seleciona "Todas" por padrão
     useEffect(() => {
         if (bankAccounts && bankAccounts.length > 0 && !selectedBankAccountId) {
-            setSelectedBankAccountId(bankAccounts[0].id.toString());
+            setSelectedBankAccountId('all');
         }
     }, [bankAccounts, selectedBankAccountId]);
 
@@ -94,6 +122,13 @@ export function Transactions() {
         return new Date(Number(year), Number(month) - 1, Number(day)).toLocaleDateString('pt-BR');
     };
 
+    // Ordena as transações por data (da mais recente para a mais antiga)
+    const sortedTransactions = transactions?.slice().sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+    });
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -101,26 +136,57 @@ export function Transactions() {
             <main className="bg-gray-100 dark:bg-black flex-1 p-4 pt-16 pb-20">
                 <div className="max-w-6xl mx-auto mt-8">
                     <div>
-                        <div className="flex justify-between items-center mb-4">
-                            <div className="flex-1">
+                        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-6">
+                            <div className="flex flex-col sm:flex-row gap-3 flex-1">
                                 {bankAccounts && bankAccounts.length > 0 && (
-                                    <select
-                                        value={selectedBankAccountId || ''}
-                                        onChange={(e) => setSelectedBankAccountId(e.target.value)}
-                                        className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-4 py-2 dark:text-white"
-                                    >
-                                        {bankAccounts.map((account) => (
-                                            <option key={account.id} value={account.id.toString()}>
-                                                {banks?.find(b => b.id === account.bankId)?.name} - {account.number}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px] max-w-[300px]">
+                                        <label
+                                            htmlFor="account-filter"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1"
+                                        >
+                                            Conta Bancária
+                                        </label>
+                                        <select
+                                            id="account-filter"
+                                            value={selectedBankAccountId || ''}
+                                            onChange={(e) => setSelectedBankAccountId(e.target.value)}
+                                            className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 dark:text-white focus:border-green-400 dark:focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer shadow-sm"
+                                        >
+                                            <option value="all">Todas as contas</option>
+                                            {bankAccounts.map((account) => (
+                                                <option key={account.id} value={account.id.toString()}>
+                                                    {banks?.find(b => b.id === account.bankId)?.name} - {account.number}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {selectedBankAccountId === 'all' && (
+                                    <div className="flex flex-col gap-1.5 flex-1 min-w-[180px] max-w-[250px]">
+                                        <label
+                                            htmlFor="type-filter"
+                                            className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1"
+                                        >
+                                            Tipo de Transação
+                                        </label>
+                                        <select
+                                            id="type-filter"
+                                            value={selectedTransactionTypeId || ''}
+                                            onChange={(e) => setSelectedTransactionTypeId(e.target.value || null)}
+                                            className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 dark:text-white focus:border-green-400 dark:focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/20 transition-all hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer shadow-sm"
+                                        >
+                                            <option value="">Todos os tipos</option>
+                                            <option value="1">Receita</option>
+                                            <option value="4">Despesa</option>
+                                        </select>
+                                    </div>
                                 )}
                             </div>
 
                             <button
                                 onClick={() => setIsCreateModalOpen(true)}
-                                className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded font-semibold transition-colors hover:cursor-pointer"
+                                className="bg-green-400 hover:bg-green-500 px-6 py-2.5 rounded-lg font-semibold transition-all hover:cursor-pointer shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap"
                             >
                                 Novo Lançamento
                                 <IoMdAddCircleOutline className="h-5 w-5 inline-block ml-2" />
@@ -145,7 +211,7 @@ export function Transactions() {
                             </div>
                         )}
 
-                        {transactions?.map((transaction) => (
+                        {sortedTransactions?.map((transaction) => (
                             <div key={transaction.id} className="dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded p-4 mt-4">
                                 <div className="flex justify-between items-center">
                                     <div className="flex items-center gap-4 flex-1">
@@ -160,7 +226,7 @@ export function Transactions() {
                                                 {transaction.description}
                                             </p>
                                             <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-                                                {transactionTypes?.find(t => t.id === transaction.transactionTypeId)?.name} | {transactionCategories?.find(c => c.id === transaction.transactionCategoryId)?.name}
+                                                {transactionCategories?.find(c => c.id === transaction.transactionCategoryId)?.name}
                                             </p>
                                         </div>
                                         <div className="text-right">
@@ -172,7 +238,7 @@ export function Transactions() {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex gap-4 ml-4">
+                                    <div className="flex gap-4 ml-8">
                                         <button
                                             onClick={() => handleEditClick(transaction.id)}
                                             className="hover:cursor-pointer"

@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import type { GetTransactionsResponse } from "./types/get/get-transactions-response";
 
-export function useTransactions(bankAccountId: string | null) {
+export function useUserTransactions(userId: string | null) {
   return useQuery({
-    queryKey: ['get-transactions', bankAccountId],
+    queryKey: ['get-user-transactions', userId],
     queryFn: async () => {
-      if (!bankAccountId) {
-        throw new Error('Bank Account ID is required');
+      if (!userId) {
+        throw new Error('User ID is required');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bank-accounts/${bankAccountId}/transactions`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userId}/transactions`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -17,12 +17,12 @@ export function useTransactions(bankAccountId: string | null) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch transactions');
+        throw new Error('Failed to fetch user transactions');
       }
 
       const result: GetTransactionsResponse = await response.json();
       return result;
     },
-    enabled: !!bankAccountId,
+    enabled: !!userId,
   });
 }
