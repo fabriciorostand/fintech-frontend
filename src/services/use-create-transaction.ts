@@ -21,7 +21,13 @@ export function useCreateTransaction() {
     },
 
     onSuccess: () => {
+      // Invalida todas as queries de transações
       queryClient.invalidateQueries({ queryKey: ['get-transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['get-user-transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['get-user-transactions-by-type'] });
+      queryClient.invalidateQueries({ queryKey: ['get-bank-account-type-transactions'] });
+      // Invalida as contas bancárias para atualizar o saldo
+      queryClient.invalidateQueries({ queryKey: ['get-bank-accounts'] });
     },
   });
 }

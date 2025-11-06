@@ -191,7 +191,7 @@ export function Transactions() {
 
                             <button
                                 onClick={() => setIsCreateModalOpen(true)}
-                                className="bg-green-400 hover:bg-green-500 px-6 py-2.5 rounded-lg font-semibold transition-all hover:cursor-pointer shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap"
+                                className="bg-green-400 hover:bg-green-500 text-white px-6 py-2.5 rounded-lg font-semibold transition-all hover:cursor-pointer shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap"
                             >
                                 Novo Lançamento
                                 <IoMdAddCircleOutline className="h-5 w-5 inline-block ml-2" />

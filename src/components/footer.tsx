@@ -13,20 +13,20 @@ export function Footer() {
                 Início
             </Link>
 
-            {/* Events */}
+            {/* Transactions */}
             <Link to="/transactions" className="flex flex-1 flex-col items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <GrTransaction />
                 Lançamentos
             </Link>
 
-            {/* Store */}
-            <Link to="/" className="flex flex-1 flex-col items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+            {/* Investments */}
+            <Link to="/investments" className="flex flex-1 flex-col items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <BsBarChartFill />
                 Investimentos
             </Link>
 
             {/* Configs */}
-            <Link to="/" className="flex flex-1 flex-col items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <Link to="/configurations" className="flex flex-1 flex-col items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <LuSettings />
                 Configurações
             </Link>

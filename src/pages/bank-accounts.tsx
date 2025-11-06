@@ -79,7 +79,7 @@ export function BankAccounts() {
                         <div className="flex justify-end">
                             <button
                                 onClick={() => setIsCreateModalOpen(true)}
-                                className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded font-semibold transition-colors hover:cursor-pointer"
+                                className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded font-semibold transition-colors hover:cursor-pointer"
                             >
                                 Adicionar conta
                                 <IoMdAddCircleOutline className="h-5 w-5 inline-block ml-2" />

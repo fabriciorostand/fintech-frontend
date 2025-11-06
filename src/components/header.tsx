@@ -19,19 +19,19 @@ export function Header() {
     } = useDropdown();
 
     return (
-        <header className="fixed top-0 left-0 w-full bg-orange-400 dark:bg-gray-800 px-6 py-2 flex items-center justify-between shadow-md z-50">
+        <header className="fixed top-0 left-0 w-full bg-green-400 dark:bg-gray-800 px-6 py-2 flex items-center justify-between shadow-md z-50">
             {/* Menu button */}
             <button
                 onClick={toggleSidebar}
                 className="hidden md:flex"
                 aria-label="Toggle menu"
             >
-                <IoIosMenu className="h-6 w-6 cursor-pointer" />
+                <IoIosMenu className="h-7 w-7 text-white cursor-pointer" />
             </button>
 
             {/* Sidebar */}
             <div
-                className={`fixed top-0 left-0 h-full w-60 bg-orange-400 dark:bg-gray-800 shadow-lg transform transition-transform duration-300 z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed top-0 left-0 h-full w-60 bg-green-400 dark:bg-gray-800 shadow-lg transform transition-transform duration-300 z-40 ${isOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
                 <div className="p-4 flex items-center gap-3">
@@ -41,38 +41,38 @@ export function Header() {
                         className="p-2"
                         aria-label="Close menu"
                     >
-                        <IoIosMenu className="h-6 w-6 cursor-pointer" />
+                        <IoIosMenu className="h-7 w-7 text-white cursor-pointer" />
                     </button>
                 </div>
 
                 <nav className="flex flex-col p-4 gap-4">
-                    <Link to="/dashboard" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
-                        <MdOutlineHome />
+                    <Link to="/dashboard" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-green-300 dark:hover:bg-gray-700 transition">
+                        <MdOutlineHome className="h-5 w-5" />
                         Início
                     </Link>
-                    <Link to="/transactions" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
-                        <GrTransaction />
+                    <Link to="/transactions" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-green-300 dark:hover:bg-gray-700 transition">
+                        <GrTransaction className="h-5 w-5" />
                         Lançamentos
                     </Link>
-                    <Link to="/" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
-                        <BsBarChartFill />
+                    <Link to="/investments" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-green-300 dark:hover:bg-gray-700 transition">
+                        <BsBarChartFill className="h-5 w-5" />
                         Investimentos
                     </Link>
-                    <Link to="/bank-accounts" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
-                        <AiFillBank />
+                    <Link to="/bank-accounts" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-green-300 dark:hover:bg-gray-700 transition">
+                        <AiFillBank className="h-5 w-5" />
                         Contas Bancárias
                     </Link>
-                    <a href="account-preferences.html" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-orange-300 dark:hover:bg-gray-700 transition">
-                        <LuSettings />
+                    <Link to="/configurations" className="flex items-center gap-2 p-2 text-white rounded-lg hover:bg-green-300 dark:hover:bg-gray-700 transition">
+                        <LuSettings className="h-5 w-5" />
                         Configurações
-                    </a>
+                    </Link>
                 </nav>
             </div>
 
             <div className="flex items-center gap-4 ml-auto">
                 {/* Notification icon */}
                 <div>
-                    <MdNotificationsNone className="h-6 w-6 cursor-pointer" />
+                    <MdNotificationsNone className="h-6 w-6 text-white cursor-pointer" />
                 </div>
 
                 {/* Account avatar */}
@@ -83,7 +83,7 @@ export function Header() {
                         className="p-1"
                         aria-label="Menu do usuário"
                     >
-                        <RxAvatar className="h-10 w-10 cursor-pointer rounded-full" />
+                        <RxAvatar className="h-10 w-10 text-white cursor-pointer rounded-full" />
                     </button>
 
                     {/* Avatar Dropdown */}
