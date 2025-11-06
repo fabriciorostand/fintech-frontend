@@ -68,7 +68,16 @@ A aplicação estará disponível em: `http://localhost:5173`
 | `npm run lint` | Executa o ESLint para verificar problemas no código |
 | `npm run preview` | Preview da build de produção localmente |
 
-## 📁 Estrutura do Projeto
+## � Dados de Autenticação - Usuário de Teste
+
+Para facilitar os testes da aplicação, você pode utilizar as seguintes credenciais:
+
+**Email:** `teste@gmail.com`  
+**Senha:** `12345678`
+
+> **Nota:** Também é possível criar uma nova conta através da página de cadastro.
+
+## �📁 Estrutura do Projeto
 
 ```
 fintech-frontend/
