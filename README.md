@@ -1,73 +1,152 @@
-# React + TypeScript + Vite
+# Fintech Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema de gerenciamento financeiro desenvolvido como projeto da FIAP.
 
-Currently, two official plugins are available:
+## 📋 Descrição
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Aplicação web para gestão financeira pessoal, permitindo controle de contas bancárias, transações, investimentos e análise de despesas. Desenvolvido com React, TypeScript e Vite.
 
-## React Compiler
+## 🚀 Tecnologias Utilizadas
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **React 19** - Biblioteca JavaScript para construção de interfaces
+- **TypeScript** - Superset JavaScript com tipagem estática
+- **Vite** - Build tool e dev server de alta performance
+- **React Router DOM** - Roteamento para aplicações React
+- **TanStack Query (React Query)** - Gerenciamento de estado assíncrono e cache
+- **Tailwind CSS v4** - Framework CSS utility-first
+- **React Icons** - Biblioteca de ícones
+- **ESLint** - Linter para identificação de problemas no código
 
-## Expanding the ESLint configuration
+## 📦 Pré-requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Antes de iniciar, certifique-se de ter instalado em sua máquina:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Node.js** (versão 18 ou superior)
+- **npm** (geralmente vem com Node.js) ou **yarn** ou **pnpm**
+- **Git** (para clonar o repositório)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🔧 Instruções de Inicialização
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/fabriciorostand/fintech-frontend.git
+cd fintech-frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Instale as dependências
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Usando npm:
+```bash
+npm install
 ```
+
+Ou usando yarn:
+```bash
+yarn install
+```
+
+Ou usando pnpm:
+```bash
+pnpm install
+```
+
+### 3. Inicie o servidor de desenvolvimento
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em: `http://localhost:5173`
+
+### 4. Scripts Disponíveis
+
+| Comando | Descrição |
+|---------|-----------|
+| `npm run dev` | Inicia o servidor de desenvolvimento |
+| `npm run build` | Gera build de produção otimizado |
+| `npm run lint` | Executa o ESLint para verificar problemas no código |
+| `npm run preview` | Preview da build de produção localmente |
+
+## 📁 Estrutura do Projeto
+
+```
+fintech-frontend/
+├── public/              # Arquivos estáticos públicos
+├── src/
+│   ├── assets/         # Imagens e recursos
+│   ├── components/     # Componentes React reutilizáveis
+│   │   ├── ui/        # Componentes de interface (buttons, forms, modals)
+│   │   ├── header.tsx
+│   │   ├── footer.tsx
+│   │   └── ...
+│   ├── hooks/         # Custom React Hooks
+│   ├── pages/         # Páginas da aplicação
+│   │   ├── index.tsx
+│   │   ├── dashboard.tsx
+│   │   ├── transactions.tsx
+│   │   ├── bank-accounts.tsx
+│   │   ├── investments.tsx
+│   │   └── ...
+│   ├── services/      # Serviços e lógica de API
+│   │   ├── types/    # TypeScript tipos e interfaces
+│   │   └── ...
+│   ├── app.tsx       # Componente principal da aplicação
+│   ├── main.tsx      # Ponto de entrada da aplicação
+│   └── index.css     # Estilos globais
+├── index.html         # Template HTML
+├── package.json       # Dependências e scripts
+├── tsconfig.json      # Configuração TypeScript
+├── vite.config.ts     # Configuração Vite
+└── eslint.config.js   # Configuração ESLint
+```
+
+## 🎯 Funcionalidades
+
+- ✅ Autenticação de usuários (Login/Cadastro)
+- ✅ Dashboard com visão geral financeira
+- ✅ Gerenciamento de contas bancárias
+- ✅ Registro e controle de transações
+- ✅ Categorização de despesas e receitas
+- ✅ Gestão de investimentos
+- ✅ Modo escuro/claro
+- ✅ Interface responsiva
+
+## 🛠️ Build para Produção
+
+Para gerar uma versão otimizada para produção:
+
+```bash
+npm run build
+```
+
+Os arquivos otimizados serão gerados no diretório `dist/`.
+
+Para testar a build localmente:
+
+```bash
+npm run preview
+```
+
+## 🐛 Desenvolvimento
+
+### Verificação de Código
+
+Execute o linter para identificar problemas:
+
+```bash
+npm run lint
+```
+
+### Configuração do Editor
+
+Recomendamos usar **Visual Studio Code** com as seguintes extensões:
+
+- ESLint
+- Prettier
+- Tailwind CSS IntelliSense
+- TypeScript Vue Plugin (Volar)
+
+## 📄 Licença
+
+Este projeto está sob a licença especificada no arquivo [LICENSE](LICENSE).
