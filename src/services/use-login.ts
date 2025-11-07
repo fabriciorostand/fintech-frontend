@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { LoginRequest } from "./types/login-request";
 import type { LoginResponse } from "./types/login-response";
+import { useAuth } from "../hooks/useAuth";
 
 export function useLogin() {
   const queryClient = useQueryClient();
+  const { login } = useAuth();
 
   return useMutation({
     mutationFn: async (data: LoginRequest) => {
@@ -23,19 +25,17 @@ export function useLogin() {
         throw new Error(message);
       }
 
-      // Armazenar userId e userName no localStorage
-      if (result.userId !== null) {
+      // Armazenar userId e userName no localStorage e atualizar o contexto de autenticação
+      if (result.userId !== null && result.userName) {
         try {
-          localStorage.setItem('userId', result.userId.toString());
+          const userIdStr = result.userId.toString();
+          localStorage.setItem('userId', userIdStr);
+          localStorage.setItem('userName', result.userName);
+          
+          // Atualiza o estado de autenticação
+          login(userIdStr, result.userName);
         } catch {
           // ignore storage errors
-        }
-      }
-      if (result.userName) {
-        try {
-          localStorage.setItem('userName', result.userName);
-        } catch {
-          // ignore
         }
       }
 

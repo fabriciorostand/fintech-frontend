@@ -6,11 +6,13 @@ import { MdNotificationsNone, MdOutlineHome } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { useDropdown } from "../hooks/useDropdown";
 import { useSidebar } from "../hooks/useSidebar";
+import { useLogout } from "../hooks/useLogout";
 import { Link } from "react-router-dom";
 import { AiFillBank } from "react-icons/ai";
 
 export function Header() {
     const { isOpen, toggleSidebar } = useSidebar();
+    const { logout } = useLogout();
     const {
         isOpen: isAvatarDropdownOpen,
         toggleDropdown: toggleAvatarDropdown,
@@ -100,7 +102,7 @@ export function Header() {
                             </a>
                             {/* Logout button */}
                             <button
-                                id="logoutBtn"
+                                onClick={logout}
                                 className="w-full text-left px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 hover:cursor-pointer"
                             >
                                 Sair

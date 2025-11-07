@@ -2,12 +2,14 @@ import { Form, FormLabel } from "../components/ui/form"
 import { Input } from "../components/ui/input"
 import { TogglePasswordButton } from "../components/ui/toggle-password-button"
 import { Button } from "../components/ui/button"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 
 import { useState } from 'react'
 import { useCreateUser } from '../services/use-create-user'
+import { useAuth } from "../hooks/useAuth"
 
 export function Signup() {
+    const { isAuthenticated } = useAuth();
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -17,6 +19,11 @@ export function Signup() {
     const [success, setSuccess] = useState(false)
 
     const createUser = useCreateUser()
+
+    // Se já estiver autenticado, redireciona para o dashboard
+    if (isAuthenticated) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)

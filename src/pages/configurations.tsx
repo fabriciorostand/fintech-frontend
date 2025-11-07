@@ -84,7 +84,7 @@ export function Configurations() {
                     <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6">
                         <h2 className="text-lg font-semibold text-gray-700 dark:text-white mb-4">Gerenciamento da conta</h2>
                         <p className="text-gray-600 dark:text-white mb-4">Ao excluir sua conta, todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita.</p>
-                        <button 
+                        <button
                             onClick={handleDeleteClick}
                             disabled={isDeleting}
                             className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
