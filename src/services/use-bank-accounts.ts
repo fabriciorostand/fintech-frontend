@@ -9,7 +9,7 @@ export function useBankAccounts(userId: string | null) {
         throw new Error('User ID is required');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bank-accounts?userId=${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userId}/bank-accounts`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

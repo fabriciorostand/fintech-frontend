@@ -116,7 +116,7 @@ export function Dashboard() {
               )}
 
               {!isLoading && !isError && !hasBankAccounts && (
-                <Link to="/bank-accounts" className="block w-full bg-green-400 hover:bg-green-500 hover:cursor-pointer mt-8 px-4 py-2 rounded font-semibold text-center transition-colors">
+                <Link to="/bank-accounts" className="block w-full bg-green-400 hover:bg-green-500 hover:cursor-pointer mt-8 px-4 py-2 rounded font-semibold text-white text-center transition-colors">
                   Adicionar conta
                 </Link>
               )}
