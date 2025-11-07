@@ -11,7 +11,7 @@ export function Dashboard() {
   const [userId, setUserId] = useState<string | null>(null);
   const { data: bankAccounts, isLoading, isError } = useBankAccounts(userId);
 
-  // Busca receitas (tipo 1) e despesas (tipo 4)
+  // Busca receitas (id do tipo: 1) e despesas (id do tipo: 4)
   const { data: incomeTransactions } = useUserTransactionsByType(userId, '1');
   const { data: expenseTransactions } = useUserTransactionsByType(userId, '4');
   const { data: transactionCategories } = useTransactionCategories();
@@ -43,13 +43,20 @@ export function Dashboard() {
 
     return transactions
       .filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+        const [year, month, day] = transaction.date.split('T')[0].split('-');
+        const transactionDate = new Date(Number(year), Number(month) - 1, Number(day));
         return (
           transactionDate.getMonth() === currentMonth &&
           transactionDate.getFullYear() === currentYear
         );
       })
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .sort((a, b) => {
+        const [yearA, monthA, dayA] = a.date.split('T')[0].split('-');
+        const [yearB, monthB, dayB] = b.date.split('T')[0].split('-');
+        const dateA = new Date(Number(yearA), Number(monthA) - 1, Number(dayA));
+        const dateB = new Date(Number(yearB), Number(monthB) - 1, Number(dayB));
+        return dateB.getTime() - dateA.getTime();
+      })
       .slice(0, 5);
   };
 
