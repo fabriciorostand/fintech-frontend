@@ -4,9 +4,18 @@ import { Header } from "../components/header";
 import { RxAvatar } from "react-icons/rx";
 import { MdNotificationsNone } from "react-icons/md";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { useDeleteAccount } from "../hooks/useDeleteAccount";
+import { ExclusionConfirmation } from "../components/ui/exclusion-confirmation";
 
 export function Configurations() {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const {
+        isDeleteModalOpen,
+        isDeleting,
+        handleDeleteClick,
+        handleConfirmDelete,
+        handleCloseModal,
+    } = useDeleteAccount();
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -75,12 +84,25 @@ export function Configurations() {
                     <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6">
                         <h2 className="text-lg font-semibold text-gray-700 dark:text-white mb-4">Gerenciamento da conta</h2>
                         <p className="text-gray-600 dark:text-white mb-4">Ao excluir sua conta, todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita.</p>
-                        <button className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition hover:cursor-pointer">
-                            Excluir conta
+                        <button 
+                            onClick={handleDeleteClick}
+                            disabled={isDeleting}
+                            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isDeleting ? 'Excluindo...' : 'Excluir conta'}
                         </button>
                     </div>
                 </section>
             </main>
+
+            <ExclusionConfirmation
+                isOpen={isDeleteModalOpen}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirmDelete}
+                title="Excluir Conta"
+                message="Tem certeza que deseja excluir sua conta? Todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita."
+                isDeleting={isDeleting}
+            />
 
             <Footer />
         </div>

@@ -28,7 +28,7 @@ export function ExclusionConfirmation({
             <div className="bg-linear-to-br from-green-500 to-green-600 rounded-lg shadow-xl w-full max-w-md p-8 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-white transition-colors duration-200 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-green-400"
+                    className="absolute top-4 right-4 text-white transition-colors duration-200 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-green-400 hover:cursor-pointer"
                     type="button"
                     disabled={isDeleting}
                     aria-label="Fechar"
@@ -51,7 +51,7 @@ export function ExclusionConfirmation({
                         type="button"
                         onClick={onClose}
                         disabled={isDeleting}
-                        className="bg-white text-gray-800 p-3 rounded w-full hover:bg-gray-200 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-white text-gray-800 p-3 rounded w-full hover:bg-gray-200 transition-colors duration-200 font-medium hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Cancelar
                     </Button>
@@ -59,7 +59,7 @@ export function ExclusionConfirmation({
                         type="button"
                         onClick={handleConfirm}
                         disabled={isDeleting}
-                        className="bg-red-600 bg-opacity-20 text-white p-3 rounded w-full hover:bg-red-500 duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-red-600 bg-opacity-20 text-white p-3 rounded w-full hover:bg-red-500 duration-200 font-medium hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isDeleting ? 'Excluindo...' : 'Confirmar Exclusão'}
                     </Button>
