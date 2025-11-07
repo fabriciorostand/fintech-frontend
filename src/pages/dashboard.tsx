@@ -156,6 +156,56 @@ export function Dashboard() {
           <div className="dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-xl">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
+                <h2 className="font-bold dark:text-white">Receitas</h2>
+                <p className="dark:text-white">{getCurrentMonthYear()}</p>
+              </div>
+              <div className="mb-4">
+                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                  {formatCurrency(totalIncomes)}
+                </p>
+              </div>
+            </div>
+            <div className="px-6 pb-6">
+              <h4 className="dark:text-white font-semibold mb-4">Últimas receitas</h4>
+              {currentMonthIncomes.length === 0 ? (
+                <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">
+                  Nenhuma receita registrada este mês
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {currentMonthIncomes.map((transaction) => (
+                    <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <div className="flex items-center gap-3 flex-1">
+                        <div className="rounded-full w-10 h-10 bg-gray-300 dark:bg-gray-600 flex items-center justify-center shrink-0">
+                          {/* imagem */}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-sm dark:text-white truncate">
+                            {transaction.name}
+                          </h3>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {transactionCategories?.find(c => c.id === transaction.transactionCategoryId)?.name || 'Categoria'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right ml-2">
+                        <p className="font-semibold text-sm text-green-600 dark:text-green-400">
+                          {formatCurrency(transaction.value)}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {formatDate(transaction.date)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-xl">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold dark:text-white">Gastos</h2>
                 <p className="dark:text-white">{getCurrentMonthYear()}</p>
               </div>
@@ -203,55 +253,6 @@ export function Dashboard() {
             </div>
           </div>
 
-          <div className="dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-xl">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-bold dark:text-white">Receitas</h2>
-                <p className="dark:text-white">{getCurrentMonthYear()}</p>
-              </div>
-              <div className="mb-4">
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {formatCurrency(totalIncomes)}
-                </p>
-              </div>
-            </div>
-            <div className="px-6 pb-6">
-              <h4 className="dark:text-white font-semibold mb-4">Últimas receitas</h4>
-              {currentMonthIncomes.length === 0 ? (
-                <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">
-                  Nenhuma receita registrada este mês
-                </p>
-              ) : (
-                <div className="space-y-3">
-                  {currentMonthIncomes.map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="flex items-center gap-3 flex-1">
-                        <div className="rounded-full w-10 h-10 bg-gray-300 dark:bg-gray-600 flex items-center justify-center shrink-0">
-                          {/* imagem */}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-sm dark:text-white truncate">
-                            {transaction.name}
-                          </h3>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {transactionCategories?.find(c => c.id === transaction.transactionCategoryId)?.name || 'Categoria'}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right ml-2">
-                        <p className="font-semibold text-sm text-green-600 dark:text-green-400">
-                          {formatCurrency(transaction.value)}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {formatDate(transaction.date)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </main>
 

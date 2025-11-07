@@ -4,56 +4,28 @@ import { TogglePasswordButton } from "../components/ui/toggle-password-button"
 import { Button } from "../components/ui/button"
 import { Link, Navigate } from "react-router-dom"
 
-import { useState } from 'react'
-import { useCreateUser } from '../services/use-create-user'
 import { useAuth } from "../hooks/useAuth"
+import { useSignup } from "../hooks/useSignup"
 
 export function Signup() {
     const { isAuthenticated } = useAuth();
-
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordVisible, setPasswordVisible] = useState(false)
-    const [error, setError] = useState<string | null>(null)
-    const [success, setSuccess] = useState(false)
-
-    const createUser = useCreateUser()
+    const {
+        name,
+        email,
+        password,
+        passwordVisible,
+        error,
+        isLoading,
+        handleNameChange,
+        handleEmailChange,
+        handlePasswordChange,
+        togglePasswordVisibility,
+        handleSubmit,
+    } = useSignup();
 
     // Se já estiver autenticado, redireciona para o dashboard
     if (isAuthenticated) {
         return <Navigate to="/dashboard" replace />;
-    }
-
-
-    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)
-    const handleEmailChange = (value: string) => setEmail(value)
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value)
-        if (!e.target.value) setPasswordVisible(false)
-    }
-    const togglePasswordVisibility = () => setPasswordVisible(v => !v)
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setError(null)
-        setSuccess(false)
-        createUser.mutate(
-            { name, email, password },
-            {
-                onSuccess: () => {
-                    setSuccess(true)
-                    setName('')
-                    setEmail('')
-                    setPassword('')
-                },
-                onError: (err: unknown) => {
-                    let msg = 'Erro ao cadastrar usuário.'
-                    if (err instanceof Error) msg = err.message
-                    setError(msg)
-                },
-            }
-        )
     }
 
     return (
@@ -111,15 +83,12 @@ export function Signup() {
                 </p>
 
 
-                <Button type="submit" disabled={createUser.status === 'pending'}>
-                    {createUser.status === 'pending' ? 'Cadastrando...' : 'Cadastre-se'}
+                <Button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Cadastrando...' : 'Cadastre-se'}
                 </Button>
 
                 {error && (
                     <p className="text-red-600 text-center mt-2">{error}</p>
-                )}
-                {success && (
-                    <p className="text-green-700 text-center mt-2">Usuário cadastrado com sucesso!</p>
                 )}
 
                 <p className="text-black text-center block w-full max-w-md mx-auto mt-1">

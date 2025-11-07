@@ -203,7 +203,7 @@ export function TransactionModal({
                             <option value="">
                                 {isLoadingTransactionTypes ? 'Carregando...' : 'Selecione um tipo'}
                             </option>
-                            {transactionTypes?.map((type) => (
+                            {transactionTypes?.filter((type) => type.id === 1 || type.id === 4).map((type) => (
                                 <option key={type.id} value={type.id}>
                                     {type.name}
                                 </option>
