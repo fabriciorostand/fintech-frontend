@@ -8,13 +8,12 @@ Aplicação web para gestão financeira pessoal, permitindo controle de contas b
 
 ## 🚀 Tecnologias Utilizadas
 
-- **React 19** - Biblioteca JavaScript para construção de interfaces
-- **TypeScript** - Superset JavaScript com tipagem estática
+- **React** - Biblioteca JavaScript para construção de interfaces
 - **Vite** - Build tool e dev server de alta performance
+- **TypeScript** - Superset JavaScript com tipagem estática
+- **Tailwind CSS** - Framework CSS utility-first
 - **React Router DOM** - Roteamento para aplicações React
 - **TanStack Query (React Query)** - Gerenciamento de estado assíncrono e cache
-- **Tailwind CSS v4** - Framework CSS utility-first
-- **React Icons** - Biblioteca de ícones
 - **ESLint** - Linter para identificação de problemas no código
 
 ## 📦 Pré-requisitos
@@ -68,11 +67,11 @@ A aplicação estará disponível em: `http://localhost:5173`
 | `npm run lint` | Executa o ESLint para verificar problemas no código |
 | `npm run preview` | Preview da build de produção localmente |
 
-## � Dados de Autenticação - Usuário de Teste
+## 👤 Dados de Autenticação - Usuário de Teste
 
 Para facilitar os testes da aplicação, você pode utilizar as seguintes credenciais:
 
-**Email:** `teste@gmail.com`  
+**Email:** `teste@email.com`  
 **Senha:** `12345678`
 
 > **Nota:** Também é possível criar uma nova conta através da página de cadastro.
@@ -81,33 +80,20 @@ Para facilitar os testes da aplicação, você pode utilizar as seguintes creden
 
 ```
 fintech-frontend/
-├── public/              # Arquivos estáticos públicos
+├── public/            # Arquivos estáticos públicos
 ├── src/
-│   ├── assets/         # Imagens e recursos
-│   ├── components/     # Componentes React reutilizáveis
-│   │   ├── ui/        # Componentes de interface (buttons, forms, modals)
-│   │   ├── header.tsx
-│   │   ├── footer.tsx
-│   │   └── ...
-│   ├── hooks/         # Custom React Hooks
+│   ├── assets/        # Imagens e recursos
+│   ├── components/    # Componentes React reutilizáveis
+│   │   ├── ui/        # Componentes de interface
+│   ├── contexts/      # Context API para gerenciamento de estado
+│   ├── hooks/         # React Hooks customizados
 │   ├── pages/         # Páginas da aplicação
-│   │   ├── index.tsx
-│   │   ├── dashboard.tsx
-│   │   ├── transactions.tsx
-│   │   ├── bank-accounts.tsx
-│   │   ├── investments.tsx
-│   │   └── ...
 │   ├── services/      # Serviços e lógica de API
-│   │   ├── types/    # TypeScript tipos e interfaces
-│   │   └── ...
-│   ├── app.tsx       # Componente principal da aplicação
-│   ├── main.tsx      # Ponto de entrada da aplicação
-│   └── index.css     # Estilos globais
+│   │   ├── types/        # TypeScript tipos e interfaces
+│   ├── app.tsx        # Componente principal da aplicação
+│   ├── main.tsx       # Ponto de entrada da aplicação
+│   └── index.css      # Estilos globais
 ├── index.html         # Template HTML
-├── package.json       # Dependências e scripts
-├── tsconfig.json      # Configuração TypeScript
-├── vite.config.ts     # Configuração Vite
-└── eslint.config.js   # Configuração ESLint
 ```
 
 ## 🎯 Funcionalidades
@@ -146,16 +132,3 @@ Execute o linter para identificar problemas:
 ```bash
 npm run lint
 ```
-
-### Configuração do Editor
-
-Recomendamos usar **Visual Studio Code** com as seguintes extensões:
-
-- ESLint
-- Prettier
-- Tailwind CSS IntelliSense
-- TypeScript Vue Plugin (Volar)
-
-## 📄 Licença
-
-Este projeto está sob a licença especificada no arquivo [LICENSE](LICENSE).
