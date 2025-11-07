@@ -77,7 +77,7 @@ Para facilitar os testes da aplicação, você pode utilizar as seguintes creden
 
 > **Nota:** Também é possível criar uma nova conta através da página de cadastro.
 
-## �📁 Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 fintech-frontend/
