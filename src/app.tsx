@@ -7,6 +7,7 @@ import { Transactions } from './pages/transactions.tsx';
 import { BankAccounts } from './pages/bank-accounts.tsx';
 import { Investments } from './pages/investments.tsx';
 import { Configurations } from './pages/configurations.tsx';
+import { NotFound } from './pages/not-found.tsx';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ export function App() {
           <Route element={<BankAccounts />} path="/bank-accounts" />
           <Route element={<Investments />} path="/investments" />
           <Route element={<Configurations />} path="/configurations" />
+          <Route element={<NotFound />} path="*" />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

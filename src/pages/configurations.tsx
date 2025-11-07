@@ -3,7 +3,7 @@ import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import { RxAvatar } from "react-icons/rx";
 import { MdNotificationsNone } from "react-icons/md";
-import { useDarkMode } from "../hooks/use-dark-mode";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 export function Configurations() {
     const { isDarkMode, toggleDarkMode } = useDarkMode();

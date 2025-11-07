@@ -4,8 +4,8 @@ import { IoIosMenu } from "react-icons/io";
 import { LuSettings } from "react-icons/lu";
 import { MdNotificationsNone, MdOutlineHome } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
-import { useDropdown } from "../hooks/use-dropdown";
-import { useSidebar } from "../hooks/use-sidebar";
+import { useDropdown } from "../hooks/useDropdown";
+import { useSidebar } from "../hooks/useSidebar";
 import { Link } from "react-router-dom";
 import { AiFillBank } from "react-icons/ai";
 
