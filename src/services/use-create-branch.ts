@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateBranchRequest } from "./types/create/create-branch-request";
-import type { CreateBranchResponse } from "./types/create/create-branch-response";
+import type { BranchResponse } from "./types/create/branch-response";
 
 export function useCreateBranch() {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export function useCreateBranch() {
         body: JSON.stringify(data),
       });
 
-      const result: CreateBranchResponse = await response.json();
+      const result: BranchResponse = await response.json();
 
       return result;
     },

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdateTransactionResponse } from "./types/update/update-transaction-response";
 import type { UpdateTransactionRequest } from "./types/update/update-transaction-request";
+import type { TransactionResponse } from "./types/create/transaction-response";
 
 export function useUpdateTransaction() {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export function useUpdateTransaction() {
         throw new Error('Failed to update transaction');
       }
 
-      const result: UpdateTransactionResponse = await response.json();
+      const result: TransactionResponse = await response.json();
 
       return result;
     },

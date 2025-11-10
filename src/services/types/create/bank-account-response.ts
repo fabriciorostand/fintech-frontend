@@ -1,4 +1,4 @@
-export type UpdateBankAccountResponse = {
+export type BankAccountResponse = {
     id: number;
     userId: number;
     branchId: number;

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateBankAccountResponse } from "./types/create/create-bank-account-response";
+import type { CreateBankAccountResponse } from "./types/create/bank-account-response";
 import type { CreateBankAccountRequest } from "./types/create/create-bank-account-request";
 
 export function useCreateBankAccount() {

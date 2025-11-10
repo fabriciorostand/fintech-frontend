@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateTransactionRequest } from "./types/create/create-transaction-request";
-import type { CreateTransactionResponse } from "./types/create/create-transaction-response";
+import type { TransactionResponse } from "./types/create/transaction-response";
 
 export function useCreateTransaction() {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export function useCreateTransaction() {
         body: JSON.stringify(data),
       });
 
-      const result: CreateTransactionResponse = await response.json();
+      const result: TransactionResponse = await response.json();
 
       return result;
     },

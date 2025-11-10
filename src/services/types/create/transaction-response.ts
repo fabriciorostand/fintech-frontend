@@ -1,4 +1,4 @@
-export type CreateTransactionResponse = {
+export type TransactionResponse = {
     id: number;
     name: string;
     description: string;

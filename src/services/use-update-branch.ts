@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdateBranchResponse } from "./types/update/update-branch-response";
 import type { UpdateBranchRequest } from "./types/update/update-branch-request";
+import type { BranchResponse } from "./types/create/branch-response";
 
 export function useUpdateBranch() {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export function useUpdateBranch() {
         throw new Error('Failed to update branch');
       }
 
-      const result: UpdateBranchResponse = await response.json();
+      const result: BranchResponse = await response.json();
 
       return result;
     },

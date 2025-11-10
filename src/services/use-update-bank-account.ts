@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdateBankAccountResponse } from "./types/update/update-bank-account-response";
 import type { UpdateBankAccountRequest } from "./types/update/update-bank-account-request";
+import type { BankAccountResponse } from "./types/create/bank-account-response";
 
 export function useUpdateBankAccount() {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export function useUpdateBankAccount() {
         throw new Error('Failed to update bank account');
       }
 
-      const result: UpdateBankAccountResponse = await response.json();
+      const result: BankAccountResponse = await response.json();
 
       return result;
     },
