@@ -7,13 +7,16 @@ export function useCreateTransactionCategory() {
 
   return useMutation({
     mutationFn: async (data: CreateTransactionCategoryRequest) => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transaction-categories`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/transaction-categories`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result: CreateTransactionCategoryResponse = await response.json();
 
@@ -21,7 +24,9 @@ export function useCreateTransactionCategory() {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-transaction-categories'] });
+      queryClient.invalidateQueries({
+        queryKey: ["get-transaction-categories"],
+      });
     },
   });
 }

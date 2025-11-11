@@ -2,12 +2,12 @@ import { Header } from "../components/header";
 
 export function Investments() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header />
 
-      <main className="bg-gray-100 dark:bg-black flex-1 p-4 pt-16 pb-20 flex items-center justify-center">
-        <h1 className="dark:text-white text-2xl text-center">Em breve</h1>
+      <main className="flex flex-1 items-center justify-center bg-gray-100 p-4 pt-16 pb-20 dark:bg-black">
+        <h1 className="text-center text-2xl dark:text-white">Em breve</h1>
       </main>
     </div>
-  )
+  );
 }

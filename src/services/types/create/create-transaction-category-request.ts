@@ -1,3 +1,3 @@
 export type CreateTransactionCategoryRequest = {
-    name: string;
+  name: string;
 };

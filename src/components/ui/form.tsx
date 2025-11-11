@@ -1,67 +1,70 @@
-import { type FC, type PropsWithChildren, type FormEvent } from 'react'
-import googleLogo from '../../assets/images/google-logo.png'
-import facebookLogo from '../../assets/images/facebook-logo.png'
+import type { FC, FormEvent, PropsWithChildren } from "react";
+import facebookLogo from "../../assets/images/facebook-logo.png";
+import googleLogo from "../../assets/images/google-logo.png";
 
 interface FormProps extends PropsWithChildren {
-    onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const Form: FC<FormProps> = ({ children, onSubmit }) => {
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        onSubmit?.(e);
-    };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    onSubmit?.(e);
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="relative w-full max-w-md mx-auto mt-1">
-                {children}
-            </div>
-        </form>
-    )
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="relative mx-auto mt-1 w-full max-w-md">{children}</div>
+    </form>
+  );
+};
 
 interface FormLabelProps extends PropsWithChildren {
-    className?: string;
+  className?: string;
 }
 
-const FormLabel: FC<FormLabelProps> = ({ children, className }) => {
-    return (
-        <label className={`block w-full max-w-md mx-auto ${className || ''}`}>
-            {children}
-        </label>
-    )
-}
+const FormLabel: FC<FormLabelProps> = ({ children, className }) => (
+  <label className={`mx-auto block w-full max-w-md ${className || ""}`}>
+    {children}
+  </label>
+);
 
-const FormSeparator: FC = () => {
-    return (
-        <div className="flex items-center my-18 w-full max-w-md mx-auto">
-            <hr className="grow border-t border-white" />
-            <span className="mx-2 text-white">ou</span>
-            <hr className="grow border-t border-white" />
-        </div>
-    )
-}
+const FormSeparator: FC = () => (
+  <div className="mx-auto my-18 flex w-full max-w-md items-center">
+    <hr className="grow border-white border-t" />
+    <span className="mx-2 text-white">ou</span>
+    <hr className="grow border-white border-t" />
+  </div>
+);
 
 const FormOthersLoginMethods: FC = () => {
-    return (
-        <div className="flex justify-center gap-8 w-full max-w-md mx-auto">
-            {/* Google button */}
-            <a className="w-14 h-14 rounded-full flex items-center justify-center shadow hover:shadow-lg transition bg-white" href="#">
-                <img src={googleLogo} alt="Google" className="w-10 h-10 object-contain" />
-            </a>
+  return (
+    <div className="mx-auto flex w-full max-w-md justify-center gap-8">
+      {/* Google button */}
+      <a
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow transition hover:shadow-lg"
+        href="#"
+      >
+        <img
+          alt="Google"
+          className="h-10 w-10 object-contain"
+          src={googleLogo}
+        />
+      </a>
 
-            {/* Facebook button */}
-            <a className="w-14 h-14 rounded-full flex items-center justify-center shadow hover:shadow-lg transition overflow-hidden" href="#">
-                <img className="w-full h-full object-contain" src={facebookLogo} alt="Facebook" />
-            </a>
-        </div>
-    )
-}
+      {/* Facebook button */}
+      <a
+        className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full shadow transition hover:shadow-lg"
+        href="#"
+      >
+        <img
+          alt="Facebook"
+          className="h-full w-full object-contain"
+          src={facebookLogo}
+        />
+      </a>
+    </div>
+  );
+};
 
-export {
-    Form,
-    FormLabel,
-    FormSeparator,
-    FormOthersLoginMethods
-}
+export { Form, FormLabel, FormSeparator, FormOthersLoginMethods };

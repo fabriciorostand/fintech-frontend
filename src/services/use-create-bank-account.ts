@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateBankAccountResponse } from "./types/create/bank-account-response";
+import type { BankAccountResponse } from "./types/create/bank-account-response";
 import type { CreateBankAccountRequest } from "./types/create/create-bank-account-request";
 
 export function useCreateBankAccount() {
@@ -7,21 +7,24 @@ export function useCreateBankAccount() {
 
   return useMutation({
     mutationFn: async (data: CreateBankAccountRequest) => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bank-accounts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/bank-accounts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-      const result: CreateBankAccountResponse = await response.json();
+      const result: BankAccountResponse = await response.json();
 
       return result;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-bank-accounts'] });
+      queryClient.invalidateQueries({ queryKey: ["get-bank-accounts"] });
     },
   });
 }

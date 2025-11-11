@@ -3,21 +3,24 @@ import type { GetBankAccountsResponse } from "./types/get/get-bank-accounts-resp
 
 export function useBankAccounts(userId: string | null) {
   return useQuery({
-    queryKey: ['get-bank-accounts', userId],
+    queryKey: ["get-bank-accounts", userId],
     queryFn: async () => {
       if (!userId) {
-        throw new Error('User ID is required');
+        throw new Error("User ID is required");
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userId}/bank-accounts`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/${userId}/bank-accounts`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch bank accounts');
+        throw new Error("Failed to fetch bank accounts");
       }
 
       const result: GetBankAccountsResponse = await response.json();

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ export function useDropdown() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      
+
       if (
         dropdownRef.current &&
         buttonRef.current &&
@@ -32,10 +32,10 @@ export function useDropdown() {
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 

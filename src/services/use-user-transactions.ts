@@ -3,21 +3,24 @@ import type { GetTransactionsResponse } from "./types/get/get-transactions-respo
 
 export function useUserTransactions(userId: string | null) {
   return useQuery({
-    queryKey: ['get-user-transactions', userId],
+    queryKey: ["get-user-transactions", userId],
     queryFn: async () => {
       if (!userId) {
-        throw new Error('User ID is required');
+        throw new Error("User ID is required");
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userId}/transactions`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/${userId}/transactions`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch user transactions');
+        throw new Error("Failed to fetch user transactions");
       }
 
       const result: GetTransactionsResponse = await response.json();

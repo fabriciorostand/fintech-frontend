@@ -7,13 +7,16 @@ export function useCreateUser() {
 
   return useMutation({
     mutationFn: async (data: CreateUserRequest) => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result: CreateUserResponse = await response.json();
 
@@ -21,7 +24,7 @@ export function useCreateUser() {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-users'] });
+      queryClient.invalidateQueries({ queryKey: ["get-users"] });
     },
   });
 }

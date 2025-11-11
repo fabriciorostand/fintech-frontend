@@ -1,4 +1,4 @@
 export type CreateBranchRequest = {
-    bankId: number;
-    number: string;
+  bankId: number;
+  number: string;
 };
