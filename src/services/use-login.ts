@@ -1,16 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
 import type { LoginRequest } from "./types/login-request";
 import type { LoginResponse } from "./types/login-response";
 
 export function useLogin() {
-  const queryClient = useQueryClient();
   const { login } = useAuth();
 
   return useMutation({
     mutationFn: async (data: LoginRequest) => {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -43,11 +42,6 @@ export function useLogin() {
       }
 
       return result;
-    },
-
-    onSuccess: () => {
-      // invalidate any user-related queries
-      queryClient.invalidateQueries({ queryKey: ["get-current-user"] });
     },
   });
 }
