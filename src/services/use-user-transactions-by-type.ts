@@ -3,10 +3,18 @@ import type { GetTransactionsResponse } from "./types/get/get-transactions-respo
 
 export function useUserTransactionsByType(
   userId: string | null,
-  transactionTypeId: string | null
+  transactionTypeId: string | null,
+  page = 0,
+  size = 20
 ) {
   return useQuery({
-    queryKey: ["get-user-transactions-by-type", userId, transactionTypeId],
+    queryKey: [
+      "get-user-transactions-by-type",
+      userId,
+      transactionTypeId,
+      page,
+      size,
+    ],
     queryFn: async () => {
       if (!userId) {
         throw new Error("User ID is required");
@@ -17,7 +25,7 @@ export function useUserTransactionsByType(
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${userId}/transactions/transaction-types/${transactionTypeId}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${userId}/transactions/transaction-types/${transactionTypeId}?page=${page}&size=${size}`,
         {
           method: "GET",
           headers: {

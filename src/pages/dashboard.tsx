@@ -12,9 +12,13 @@ export function Dashboard() {
   const { data: bankAccounts, isLoading, isError } = useBankAccounts(userId);
 
   // Busca receitas (id do tipo: 1) e despesas (id do tipo: 4)
-  const { data: incomeTransactions } = useUserTransactionsByType(userId, "1");
-  const { data: expenseTransactions } = useUserTransactionsByType(userId, "4");
+  const { data: incomeData } = useUserTransactionsByType(userId, "1", 0, 100);
+  const { data: expenseData } = useUserTransactionsByType(userId, "4", 0, 100);
   const { data: transactionCategories } = useTransactionCategories();
+
+  // Extrai o array de transações da resposta paginada
+  const incomeTransactions = incomeData?.content;
+  const expenseTransactions = expenseData?.content;
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -40,7 +44,9 @@ export function Dashboard() {
         }>
       | undefined
   ) => {
-    if (!transactions) return [];
+    if (!transactions) {
+      return [];
+    }
 
     const now = new Date();
     const currentMonth = now.getMonth();

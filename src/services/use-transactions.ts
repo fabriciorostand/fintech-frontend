@@ -24,7 +24,7 @@ export function useTransactions(userId: string | null) {
       }
 
       const result: GetTransactionsResponse = await response.json();
-      return result;
+      return result.content;
     },
     enabled: !!userId,
   });

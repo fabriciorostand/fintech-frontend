@@ -3,13 +3,17 @@ import type { GetTransactionsResponse } from "./types/get/get-transactions-respo
 
 export function useBankAccountTypeTransactions(
   bankAccountId: string | null,
-  transactionTypeId: string | null
+  transactionTypeId: string | null,
+  page = 0,
+  size = 20
 ) {
   return useQuery({
     queryKey: [
       "get-bank-account-type-transactions",
       bankAccountId,
       transactionTypeId,
+      page,
+      size,
     ],
     queryFn: async () => {
       if (!bankAccountId) {
@@ -21,7 +25,7 @@ export function useBankAccountTypeTransactions(
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/bank-accounts/${bankAccountId}/transactions/transaction-types/${transactionTypeId}`,
+        `${import.meta.env.VITE_API_URL}/api/bank-accounts/${bankAccountId}/transactions/transaction-types/${transactionTypeId}?page=${page}&size=${size}`,
         {
           method: "GET",
           headers: {

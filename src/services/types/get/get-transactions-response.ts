@@ -1,10 +1,20 @@
-export type GetTransactionsResponse = Array<{
+export type Transaction = {
   id: number;
-  name: string;
-  description: string;
   bankAccountId: number;
   transactionTypeId: number;
   transactionCategoryId: number;
+  name: string;
   value: number;
   date: string;
-}>;
+  description: string;
+};
+
+export type GetTransactionsResponse = {
+  content: Transaction[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+};
